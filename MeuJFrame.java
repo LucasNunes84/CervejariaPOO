@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 public class MeuJFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Exemplo de JFrame com Menu Lateral");
+            JFrame frame = new JFrame("CDO - Cervejaria Desorientada a Objetos");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(800, 600);
 

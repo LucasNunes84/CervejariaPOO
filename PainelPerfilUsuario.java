@@ -1,4 +1,4 @@
-package Cervejaria;
+package CervejariaPOO;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;

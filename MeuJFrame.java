@@ -1,5 +1,3 @@
-package Cervejaria;
-
 import javax.swing.*;
 
 import java.awt.*;

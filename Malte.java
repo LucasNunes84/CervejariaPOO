@@ -1,4 +1,4 @@
-package trabalho_poo;
+package CervejariaPOO;
 
 public class Malte extends Ingrediente {
 	 private String cor;

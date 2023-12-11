@@ -1,4 +1,4 @@
-package trabalho_poo;
+package CervejariaPOO;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

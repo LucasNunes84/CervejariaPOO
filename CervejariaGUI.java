@@ -1,5 +1,4 @@
-package trabalho_poo;
-
+package CervejariaPOO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

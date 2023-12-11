@@ -1,4 +1,4 @@
-package trabalho_poo;
+package CervejariaPOO;
 
 public class Adjunto extends Ingrediente {
 	 private String descricao;

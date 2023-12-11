@@ -1,4 +1,4 @@
-package trabalho_poo;
+package CervejariaPOO;
 
 public class Lupulo extends Ingrediente {
 	 private double alfaAcido;

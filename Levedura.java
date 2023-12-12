@@ -1,6 +1,8 @@
 package CervejariaPOO;
 
-public class Levedura extends Ingrediente {
+import java.io.Serializable;
+
+public class Levedura extends Ingrediente implements Serializable{
 	private String tipoFermentacao;
 
     public Levedura(String nome, double quantidadeEstoque, String unidade, String tipoFermentacao) {

@@ -1,90 +1,83 @@
 package CervejariaPOO;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 public class MenuHandler {
 	
-	public static void adicionarIngredienteOpcoes(CervejariaManager cervejariaManager, Scanner scanner) {
-        try {
-            System.out.println("===== Opções de Ingrediente =====");
-            System.out.println("1. Adicionar Malte");
-            System.out.println("2. Adicionar Lúpulo");
-            System.out.println("3. Adicionar Levedura");
-            System.out.println("4. Adicionar Adjunto");
-            System.out.print("Escolha uma opção: ");
-            int opcao = scanner.nextInt();
-            scanner.nextLine(); // Consumir a quebra de linha após a entrada do número
+	public static void adicionarIngredienteOpcoes(CervejariaManager cervejariaManager) {
+		try {
+	        String opcaoStr = JOptionPane.showInputDialog(
+	                "===== Opções de Ingrediente =====\n" +
+	                        "1. Adicionar Malte\n" +
+	                        "2. Adicionar Lúpulo\n" +
+	                        "3. Adicionar Levedura\n" +
+	                        "4. Adicionar Adjunto\n" +
+	                        "Escolha uma opção:");
+	        
+	        if (opcaoStr == null) {
+	            return;
+	        }
 
-            switch (opcao) {
-                case 1:
-                    adicionarMalte(cervejariaManager, scanner);
-                    break;
-                case 2:
-                    adicionarLupulo(cervejariaManager, scanner);
-                    break;
-                case 3:
-                    adicionarLevedura(cervejariaManager, scanner);
-                    break;
-                case 4:
-                    adicionarAdjunto(cervejariaManager, scanner);
-                    break;
-                default:
-                    System.out.println("Opção inválida. Tente novamente.");
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Erro de entrada. Certifique-se de inserir um número.");
-            scanner.nextLine(); // Limpar o buffer do scanner
-        } catch (Exception e) {
-            System.out.println("Erro: " + e.getMessage());
-            scanner.nextLine(); // Limpar o buffer do scanner
-        }
+	        int opcao = Integer.parseInt(opcaoStr);
+
+	        switch (opcao) {
+	            case 1:
+	                adicionarMalteGUI(cervejariaManager);
+	                break;
+	            case 2:
+	                adicionarLupuloGUI(cervejariaManager);
+	                break;
+	            case 3:
+	                adicionarLeveduraGUI(cervejariaManager);
+	                break;
+	            case 4:
+	                adicionarAdjuntoGUI(cervejariaManager);
+	                break;
+	            default:
+	                JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+	        }
+	    } catch (NumberFormatException e) {
+	        JOptionPane.showMessageDialog(null, "Erro de entrada. Certifique-se de inserir um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+	    } catch (Exception e) {
+	        JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+	    }
     }
 
-    public static void adicionarAdjunto(CervejariaManager cervejariaManager, Scanner scanner) {
+	public static void adicionarAdjuntoGUI(CervejariaManager cervejariaManager) {
+	    try {
+	        String nome = JOptionPane.showInputDialog("Nome do Adjunto:");
+	        String quantidadeEstoqueStr = JOptionPane.showInputDialog("Quantidade em Estoque:");
+	        double quantidadeEstoque = Double.parseDouble(quantidadeEstoqueStr);
+	        String unidade = JOptionPane.showInputDialog("Unidade:");
+	        String descricao = JOptionPane.showInputDialog("Descrição do Adjunto:");
+
+	        if (nome.isEmpty() || unidade.isEmpty() || descricao.isEmpty() || quantidadeEstoque <= 0) {
+	            throw new IllegalArgumentException("Certifique-se de preencher todos os campos corretamente.");
+	        }
+
+	        Adjunto adjunto = new Adjunto(nome, quantidadeEstoque, unidade, descricao);
+	        cervejariaManager.adicionarIngrediente(adjunto);
+	        JOptionPane.showMessageDialog(null, "Adjunto adicionado com sucesso!");
+	    } catch (NumberFormatException e) {
+	        JOptionPane.showMessageDialog(null, "Erro de entrada. Certifique-se de inserir valores válidos.", "Erro", JOptionPane.ERROR_MESSAGE);
+	    } catch (IllegalArgumentException e) {
+	        JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+	    } catch (Exception e) {
+	        JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+	    }
+	}
+
+
+    public static void adicionarMalteGUI(CervejariaManager cervejariaManager) {
         try {
-            System.out.print("Nome do Adjunto: ");
-            String nome = scanner.nextLine();
-
-            System.out.print("Quantidade em Estoque: ");
-            double quantidadeEstoque = scanner.nextDouble();
-            scanner.nextLine(); // Consumir a quebra de linha após a entrada do número
-
-            System.out.print("Unidade: ");
-            String unidade = scanner.nextLine();
-
-            System.out.print("Descrição do Adjunto: ");
-            String descricao = scanner.nextLine();
-
-            Adjunto adjunto = new Adjunto(nome, quantidadeEstoque, unidade, descricao);
-            cervejariaManager.adicionarIngrediente(adjunto);
-            System.out.println("Adjunto adicionado com sucesso!");
-        } catch (InputMismatchException e) {
-            System.out.println("Erro de entrada. Certifique-se de inserir valores válidos.");
-            scanner.nextLine(); // Limpar o buffer do scanner
-        } catch (Exception e) {
-            System.out.println("Erro: " + e.getMessage());
-            scanner.nextLine(); // Limpar o buffer do scanner
-        }
-    }
-
-
-    public static void adicionarMalte(CervejariaManager cervejariaManager, Scanner scanner) {
-        try {
-            System.out.print("Nome do Malte: ");
-            String nome = scanner.nextLine();
-
-            System.out.print("Quantidade em Estoque: ");
-            double quantidadeEstoque = scanner.nextDouble();
-            scanner.nextLine(); // Consumir a quebra de linha após a entrada do número
-
-            System.out.print("Unidade: ");
-            String unidade = scanner.nextLine();
-
-            System.out.print("Cor do Malte: ");
-            String cor = scanner.nextLine();
+            String nome = JOptionPane.showInputDialog("Nome do Malte:");
+            String quantidadeEstoqueStr = JOptionPane.showInputDialog("Quantidade em Estoque:");
+            double quantidadeEstoque = Double.parseDouble(quantidadeEstoqueStr);
+            String unidade = JOptionPane.showInputDialog("Unidade:");
+            String cor = JOptionPane.showInputDialog("Cor do Malte:");
 
             if (nome.isEmpty() || unidade.isEmpty() || cor.isEmpty() || quantidadeEstoque <= 0) {
                 throw new IllegalArgumentException("Certifique-se de preencher todos os campos corretamente.");
@@ -92,33 +85,24 @@ public class MenuHandler {
 
             Malte malte = new Malte(nome, quantidadeEstoque, unidade, cor);
             cervejariaManager.adicionarIngrediente(malte);
-            System.out.println("Malte adicionado com sucesso!");
-        } catch (InputMismatchException e) {
-            System.out.println("Erro de entrada. Certifique-se de inserir valores válidos.");
-            scanner.nextLine(); // Limpar o buffer do scanner
+            JOptionPane.showMessageDialog(null, "Malte adicionado com sucesso!");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Erro de entrada. Certifique-se de inserir valores válidos.", "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (IllegalArgumentException e) {
-            System.out.println("Erro: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            System.out.println("Erro: " + e.getMessage());
-            scanner.nextLine(); // Limpar o buffer do scanner
+            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public static void adicionarLupulo(CervejariaManager cervejariaManager, Scanner scanner) {
+    public static void adicionarLupuloGUI(CervejariaManager cervejariaManager) {
         try {
-            System.out.print("Nome do Lúpulo: ");
-            String nome = scanner.nextLine();
-
-            System.out.print("Quantidade em Estoque: ");
-            double quantidadeEstoque = scanner.nextDouble();
-            scanner.nextLine(); // Consumir a quebra de linha após a entrada do número
-
-            System.out.print("Unidade: ");
-            String unidade = scanner.nextLine();
-
-            System.out.print("Alfa-Ácido do Lúpulo: ");
-            double alfaAcido = scanner.nextDouble();
-            scanner.nextLine(); // Consumir a quebra de linha após a entrada do número
+            String nome = JOptionPane.showInputDialog("Nome do Lúpulo:");
+            String quantidadeEstoqueStr = JOptionPane.showInputDialog("Quantidade em Estoque:");
+            double quantidadeEstoque = Double.parseDouble(quantidadeEstoqueStr);
+            String unidade = JOptionPane.showInputDialog("Unidade:");
+            String alfaAcidoStr = JOptionPane.showInputDialog("Alfa-Ácido do Lúpulo:");
+            double alfaAcido = Double.parseDouble(alfaAcidoStr);
 
             if (nome.isEmpty() || unidade.isEmpty() || quantidadeEstoque <= 0 || alfaAcido <= 0) {
                 throw new IllegalArgumentException("Certifique-se de preencher todos os campos corretamente.");
@@ -126,32 +110,23 @@ public class MenuHandler {
 
             Lupulo lupulo = new Lupulo(nome, quantidadeEstoque, unidade, alfaAcido);
             cervejariaManager.adicionarIngrediente(lupulo);
-            System.out.println("Lúpulo adicionado com sucesso!");
-        } catch (InputMismatchException e) {
-            System.out.println("Erro de entrada. Certifique-se de inserir valores válidos.");
-            scanner.nextLine(); // Limpar o buffer do scanner
+            JOptionPane.showMessageDialog(null, "Lúpulo adicionado com sucesso!");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Erro de entrada. Certifique-se de inserir valores válidos.", "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (IllegalArgumentException e) {
-            System.out.println("Erro: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            System.out.println("Erro: " + e.getMessage());
-            scanner.nextLine(); // Limpar o buffer do scanner
+            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public static void adicionarLevedura(CervejariaManager cervejariaManager, Scanner scanner) {
+    public static void adicionarLeveduraGUI(CervejariaManager cervejariaManager) {
         try {
-            System.out.print("Nome da Levedura: ");
-            String nome = scanner.nextLine();
-
-            System.out.print("Quantidade em Estoque: ");
-            double quantidadeEstoque = scanner.nextDouble();
-            scanner.nextLine(); // Consumir a quebra de linha após a entrada do número
-
-            System.out.print("Unidade: ");
-            String unidade = scanner.nextLine();
-
-            System.out.print("Tipo de Fermentação: ");
-            String tipoFermentacao = scanner.nextLine();
+            String nome = JOptionPane.showInputDialog("Nome da Levedura:");
+            String quantidadeEstoqueStr = JOptionPane.showInputDialog("Quantidade em Estoque:");
+            double quantidadeEstoque = Double.parseDouble(quantidadeEstoqueStr);
+            String unidade = JOptionPane.showInputDialog("Unidade:");
+            String tipoFermentacao = JOptionPane.showInputDialog("Tipo de Fermentação:");
 
             if (nome.isEmpty() || unidade.isEmpty() || tipoFermentacao.isEmpty() || quantidadeEstoque <= 0) {
                 throw new IllegalArgumentException("Certifique-se de preencher todos os campos corretamente.");
@@ -159,116 +134,64 @@ public class MenuHandler {
 
             Levedura levedura = new Levedura(nome, quantidadeEstoque, unidade, tipoFermentacao);
             cervejariaManager.adicionarIngrediente(levedura);
-            System.out.println("Levedura adicionada com sucesso!");
-        } catch (InputMismatchException e) {
-            System.out.println("Erro de entrada. Certifique-se de inserir valores válidos.");
-            scanner.nextLine(); // Limpar o buffer do scanner
+            JOptionPane.showMessageDialog(null, "Levedura adicionada com sucesso!");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Erro de entrada. Certifique-se de inserir valores válidos.", "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (IllegalArgumentException e) {
-            System.out.println("Erro: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            System.out.println("Erro: " + e.getMessage());
-            scanner.nextLine(); // Limpar o buffer do scanner
+            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public static void mostrarIngredientesNoEstoque(CervejariaManager cervejariaManager) {
-        List<Ingrediente> ingredientes = cervejariaManager.getIngredientes();
-        if (ingredientes.isEmpty()) {
-            System.out.println("Não há ingredientes no estoque.");
-        } else {
-            System.out.println("===== Ingredientes no Estoque =====");
-            for (Ingrediente ingrediente : ingredientes) {
-                System.out.println(ingrediente);
-            }
-            System.out.println("============================");
-        }
-    }
-
-    public static void adicionarReceita(CervejariaManager cervejariaManager, Scanner scanner) {
-        System.out.print("Nome da Receita: ");
-        String nome = scanner.nextLine();
-
-        System.out.print("Descrição da Receita: ");
-        String descricao = scanner.nextLine();
-
-        System.out.print("Ingredientes (separados por vírgula): ");
-        String[] ingredientesArray = scanner.nextLine().split(",");
-        List<Ingrediente> ingredientes = new ArrayList<>();
-        for (String ingredienteNome : ingredientesArray) {
-            Ingrediente ingrediente = cervejariaManager.encontrarIngrediente(ingredienteNome.trim());
-            if (ingrediente != null) {
-                ingredientes.add(ingrediente);
-            } else {
-                System.out.println("Ingrediente não encontrado: " + ingredienteNome);
-            }
-        }
-
-        Receita receita = new Receita(nome, descricao, ingredientes);
-        cervejariaManager.adicionarReceita(receita);
-        System.out.println("Receita adicionada com sucesso!");
-    }
-
-    public static void encontrarReceita(CervejariaManager cervejariaManager, Scanner scanner) {
-        System.out.print("Nome da Receita: ");
-        String nomeReceita = scanner.nextLine();
-
-        Receita receita = cervejariaManager.encontrarReceita(nomeReceita);
-        if (receita != null) {
-            System.out.println("Receita Encontrada: " + receita);
-        } else {
-            System.out.println("Receita não encontrada.");
-        }
-    }
-
-    public static void mostrarTodasReceitas(CervejariaManager cervejariaManager) {
-        List<Receita> receitas = cervejariaManager.getReceitas();
-        if (receitas.isEmpty()) {
-            System.out.println("Não há receitas cadastradas.");
-        } else {
-            System.out.println("===== Todas as Receitas =====");
-            for (Receita receita : receitas) {
-                System.out.println(receita);
-
-                // Mostrar todos os ingredientes da receita
-                System.out.println("Ingredientes:");
-                for (Ingrediente ingrediente : receita.getIngredientes()) {
-                    System.out.println("  " + ingrediente);
-                }
-                System.out.println("============================");
-            }
-        }
-    }
-
-    public static void adicionarProducaoCerveja(CervejariaManager cervejariaManager, Scanner scanner) {
+    public static void adicionarReceita(CervejariaManager cervejariaManager) {
         try {
-            System.out.print("Nome da Receita para a Produção: ");
-            String nomeReceita = scanner.nextLine();
+            String nome = JOptionPane.showInputDialog("Nome da Receita:");
+            String descricao = JOptionPane.showInputDialog("Descrição da Receita:");
 
-            Receita receita = cervejariaManager.encontrarReceita(nomeReceita);
-            if (receita != null) {
-                    cervejariaManager.adicionarProducaoCerveja(receita, 1);
-            } else {
-                System.out.println("Receita não encontrada. Não é possível realizar a produção de cerveja.");
+            String ingredientesInput = JOptionPane.showInputDialog("Ingredientes (separados por vírgula):");
+            String[] ingredientesArray = ingredientesInput.split(",");
+            List<Ingrediente> ingredientes = new ArrayList<>();
+
+            for (String ingredienteNome : ingredientesArray) {
+                Ingrediente ingrediente = cervejariaManager.encontrarIngrediente(ingredienteNome.trim());
+                if (ingrediente != null) {
+                    ingredientes.add(ingrediente);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ingrediente não encontrado: " + ingredienteNome, "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+                }
             }
-        } catch (InputMismatchException e) {
-            System.out.println("Erro de entrada. Certifique-se de inserir um número válido.");
-            scanner.nextLine(); // Limpar o buffer do scanner
+
+            Receita receita = new Receita(nome, descricao, ingredientes);
+            cervejariaManager.adicionarReceita(receita);
+            JOptionPane.showMessageDialog(null, "Receita adicionada com sucesso!");
         } catch (Exception e) {
-            System.out.println("Erro: " + e.getMessage());
-            scanner.nextLine(); // Limpar o buffer do scanner
+            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public static void mostrarTodasCervejas(CervejariaManager cervejariaManager) {
-        List<Cerveja> cervejas = cervejariaManager.getCervejas();
-        if (cervejas.isEmpty()) {
-            System.out.println("Não há cervejas cadastradas.");
-        } else {
-            System.out.println("===== Todas as Cervejas =====");
-            for (Cerveja cerveja : cervejas) {
-                System.out.println(cerveja);
+    public static void adicionarProducaoCerveja(CervejariaManager cervejariaManager) {
+        try {
+            String nomeReceita = JOptionPane.showInputDialog("Nome da Receita para a Produção:");
+            Receita receita = cervejariaManager.encontrarReceita(nomeReceita);
+
+            if (receita != null) {
+                int quantidadeProducao = 1;
+                if (cervejariaManager.verificarIngredientesSuficientes(receita, quantidadeProducao)) {
+                    cervejariaManager.adicionarProducaoCerveja(receita, quantidadeProducao);
+                    JOptionPane.showMessageDialog(null, "Produção de Cerveja adicionada com sucesso!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ingredientes insuficientes para a produção da cerveja.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Receita não encontrada. Não é possível realizar a produção de cerveja.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
-            System.out.println("============================");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Erro de entrada. Certifique-se de inserir um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 }

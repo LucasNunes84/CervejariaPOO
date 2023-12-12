@@ -1,6 +1,8 @@
 package CervejariaPOO;
 
-public class Malte extends Ingrediente {
+import java.io.Serializable;
+
+public class Malte extends Ingrediente implements Serializable{
 	 private String cor;
 
 	    public Malte(String nome, double quantidadeEstoque, String unidade, String cor) {
